@@ -8,9 +8,6 @@ scott.dangelo@hp.com
 Pull the patch for this review:
 https://review.openstack.org/#/c/224910/
 
-IMPORTANT!
-in Devstack, you will need to copy /opt/stack/cinder/etc/cinder/api-paste.ini to /etc/cinder
-if you do not, c-api will not start
 
 Patch in this code:
 https://github.com/scottdangelo/TestCinderAPImicroversions/blob/master/testVersionDecorator
