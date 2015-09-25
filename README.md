@@ -12,3 +12,5 @@ https://review.openstack.org/#/c/224910/
 Patch in this code:
 https://github.com/scottdangelo/TestCinderAPImicroversions/blob/master/testVersionDecorator
 
+Addition of new /v3 api requires a new copy of etc/cinder/api-paste.ini:
+cp etc/cinder/api-paste.ini /etc/cinder/api-paste.ini

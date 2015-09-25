@@ -8,12 +8,12 @@ https://github.com/scottdangelo/TestCinderAPImicroversions/blob/master/testVersi
 
 *******************************************
 Tests:
-1) Test decorators. Using version for base (2.0), reset-state will perform as
+1) Test decorators. Using version for base (3.0), reset-state will perform as
 expected, resetting the state to available.
-Using microversions 2.1 will result in the API logging:
-  "Test for api version 2.1"
-Using microversions 2.2 or 2.3 will result in the API logging:
-  "Test for api version 2.2 or 2.3"
+Using microversions 3.1 will result in the API logging:
+  "Test for api version 3.1"
+Using microversions 3.2 or 3.3 will result in the API logging:
+  "Test for api version 3.2 or 3.3"
 
 Get a token with:
   'keystone token-get'
@@ -24,32 +24,32 @@ Get your volume and tenant and curl string with:
 or use another method..
 
 1.1)Substitute in the following:
-curl -g -i -X POST http://10.10.10.77:8776/v2/<tenant>/volumes/<volume>/action -H "User-Agent: python-cinderclient" -H "Content-Type: application/json" -H "Accept: application/json" -H "X-Auth-Token: <token> " -d '{"os-reset_status": {"status": "available"}}' -H "X-OpenStack-Cinder-API-Version: 2.0"
+curl -g -i -X POST http://10.10.10.77:8776/v3/<tenant>/volumes/<volume>/action -H "User-Agent: python-cinderclient" -H "Content-Type: application/json" -H "Accept: application/json" -H "X-Auth-Token: <token> " -d '{"os-reset_status": {"status": "available"}}' -H "OpenStack-Volume-microversion: 3.0"
 
 Expected Result:
  normal 'reset-status <volume>' behaviour, i.e. set volume to available
 
 
 1.2)Substitute in the following:
-curl -g -i -X POST http://10.10.10.77:8776/v2/<tenant>/volumes/<volume>/action -H "User-Agent: python-cinderclient" -H "Content-Type: application/json" -H "Accept: application/json" -H "X-Auth-Token: <token> " -d '{"os-reset_status": {"status": "available"}}' -H "X-OpenStack-Cinder-API-Version: 2.1"
+curl -g -i -X POST http://10.10.10.77:8776/v3/<tenant>/volumes/<volume>/action -H "User-Agent: python-cinderclient" -H "Content-Type: application/json" -H "Accept: application/json" -H "X-Auth-Token: <token> " -d '{"os-reset_status": {"status": "available"}}' -H "OpenStack-Volume-microversion: 3.1"
 
 Expected Result:
-c-api logs will have: "Test for api version 2.1"
+c-api logs will have: "Test for api version 3.1"
 for example:
-2015-09-24 13:08:44.094 DEBUG cinder.api.contrib.admin_actions [req-4deabc79-e5d6-4cf0-9917-fe512279375b eb8b125b4429458d9aff1b6a8ba280c3 4129199b51cb408285051436781a7dc8] Test for api version 2.1 from (pid=20918) _reset_status /opt/stack/cinder/cinder/api/contrib/admin_actions.py:83
+2015-09-24 13:08:44.094 DEBUG cinder.api.contrib.admin_actions [req-4deabc79-e5d6-4cf0-9917-fe512279375b eb8b125b4429458d9aff1b6a8ba280c3 4129199b51cb408285051436781a7dc8] Test for api version 3.1 from (pid=20918) _reset_status /opt/stack/cinder/cinder/api/contrib/admin_actions.py:83
 
  normal 'reset-status <volume>' behaviour, i.e. set volume to available
 
 1.3)Substitute in the following:
-curl -g -i -X POST http://10.10.10.77:8776/v2/<tenant>/volumes/<volume>/action -H "User-Agent: python-cinderclient" -H "Content-Type: application/json" -H "Accept: application/json" -H "X-Auth-Token: <token> " -d '{"os-reset_status": {"status": "available"}}' -H "X-OpenStack-Cinder-API-Version: 2.2"
+curl -g -i -X POST http://10.10.10.77:8776/v3/<tenant>/volumes/<volume>/action -H "User-Agent: python-cinderclient" -H "Content-Type: application/json" -H "Accept: application/json" -H "X-Auth-Token: <token> " -d '{"os-reset_status": {"status": "available"}}' -H "OpenStack-Volume-microversion: 3.2"
 
 Expected Result:
-c-api logs will have: "Test for api version 2.2 or 2.3"
+c-api logs will have: "Test for api version 3.2 or 3.3"
 for example:
-2015-09-24 13:11:41.710 DEBUG cinder.api.contrib.admin_actions [req-93f2c8ac-1fa3-4e33-b5bc-c9670fd426b5 eb8b125b4429458d9aff1b6a8ba280c3 4129199b51cb408285051436781a7dc8] Test for api version 2.2 or 2.3 from (pid=20918) _reset_status /opt/stack/cinder/cinder/api/contrib/admin_actions.py:88
+2015-09-24 13:11:41.710 DEBUG cinder.api.contrib.admin_actions [req-93f2c8ac-1fa3-4e33-b5bc-c9670fd426b5 eb8b125b4429458d9aff1b6a8ba280c3 4129199b51cb408285051436781a7dc8] Test for api version 3.2 or 3.3 from (pid=20918) _reset_status /opt/stack/cinder/cinder/api/contrib/admin_actions.py:88
 
 1.4)Substitute in the following (no microversion header, older client):
-curl -g -i -X POST http://10.10.10.77:8776/v2/<tenant>/volumes/<volume>/action -H "User-Agent: python-cinderclient" -H "Content-Type: application/json" -H "Accept: application/json" -H "X-Auth-Token: <token> " -d '{"os-reset_status": {"status": "available"}}'
+curl -g -i -X POST http://10.10.10.77:8776/v3/<tenant>/volumes/<volume>/action -H "User-Agent: python-cinderclient" -H "Content-Type: application/json" -H "Accept: application/json" -H "X-Auth-Token: <token> " -d '{"os-reset_status": {"status": "available"}}'
 
 Expected Result:
  normal 'reset-status <volume>' behaviour, i.e. set volume to available
@@ -60,12 +60,12 @@ Expected Result:
 Running 'cinder create 1' will rusult in different behviours depending on the
 microversion
 
-Using microversions 2.0 will result in the API logging:
-  "Test for version 2.0 specific private method"
-Using microversions 2.1 will result in the API logging:
-  "Test for version 2.1 specific private method"
-Using microversions 2.2 will result in the API logging:
-  "Test for version 2.2 specific private method"
+Using microversions 3.0 will result in the API logging:
+  "Test for version 3.0 specific private method"
+Using microversions 3.1 will result in the API logging:
+  "Test for version 3.1 specific private method"
+Using microversions 3.2 will result in the API logging:
+  "Test for version 3.2 specific private method"
 
 
 Get a token with:
@@ -78,72 +78,72 @@ or use another method..
 
 2.1) Run command with no version in header
 Substitute in the following:
-curl -g -i -X POST http://10.10.10.77:8776/v2/<tenant>/volumes -H "User-Agent: python-cinderclient" -H "Content-Type: application/json" -H "Accept: application/json" -H "X-Auth-Token: <token>" -d '{"volume": {"status": "creating", "user_id": null, "name": null, "imageRef": null, "availability_zone": null, "description": null, "multiattach": false, "attach_status": "detached", "volume_type": null, "metadata": {}, "consistencygroup_id": null, "source_volid": null, "snapshot_id": null, "project_id": null, "source_replica": null, "size": 1}}'
+curl -g -i -X POST http://10.10.10.77:8776/v3/<tenant>/volumes -H "User-Agent: python-cinderclient" -H "Content-Type: application/json" -H "Accept: application/json" -H "X-Auth-Token: <token>" -d '{"volume": {"status": "creating", "user_id": null, "name": null, "imageRef": null, "availability_zone": null, "description": null, "multiattach": false, "attach_status": "detached", "volume_type": null, "metadata": {}, "consistencygroup_id": null, "source_volid": null, "snapshot_id": null, "project_id": null, "source_replica": null, "size": 1}}'
 
 Expected Result:
   normal 'cinder create 1' behaviour, i.e volume is created. No extra logging in API
 
-2.2) Run command with explicit version 2.0 in header
+2.2) Run command with explicit version 3.0 in header
 
 Substitute in the following:
-curl -g -i -X POST http://10.10.10.77:8776/v2/<tenant>/volumes -H "User-Agent: python-cinderclient" -H "Content-Type: application/json" -H "Accept: application/json" -H "X-Auth-Token: <token>" -d '{"volume": {"status": "creating", "user_id": null, "name": null, "imageRef": null, "availability_zone": null, "description": null, "multiattach": false, "attach_status": "detached", "volume_type": null, "metadata": {}, "consistencygroup_id": null, "source_volid": null, "snapshot_id": null, "project_id": null, "source_replica": null, "size": 1}}' -H "X-OpenStack-Cinder-API-Version: 2.0"
+curl -g -i -X POST http://10.10.10.77:8776/v3/<tenant>/volumes -H "User-Agent: python-cinderclient" -H "Content-Type: application/json" -H "Accept: application/json" -H "X-Auth-Token: <token>" -d '{"volume": {"status": "creating", "user_id": null, "name": null, "imageRef": null, "availability_zone": null, "description": null, "multiattach": false, "attach_status": "detached", "volume_type": null, "metadata": {}, "consistencygroup_id": null, "source_volid": null, "snapshot_id": null, "project_id": null, "source_replica": null, "size": 1}}' -H "OpenStack-Volume-microversion: 3.0"
 
 Expected Result:
   normal 'cinder create 1' behaviour, i.e volume is created.
-  API will log: "Test for version 2.0 specific private method"
+  API will log: "Test for version 3.0 specific private method"
 for example:
-2015-09-24 15:41:37.543 DEBUG cinder.api.v2.volumes [req-f75c402f-9565-403c-8a6f-bcf4de52d262 0ac02ef01b594e1995c399379f54fbc2 7735b664090247c78e9061d3c7b39180] Test for version 2.0 specific private method from (pid=24561) _test_version_specific /opt/stack/cinder/cinder/api/v2/volumes.py:314
+2015-09-24 15:41:37.543 DEBUG cinder.api.v3.volumes [req-f75c402f-9565-403c-8a6f-bcf4de52d262 0ac02ef01b594e1995c399379f54fbc2 7735b664090247c78e9061d3c7b39180] Test for version 3.0 specific private method from (pid=24561) _test_version_specific /opt/stack/cinder/cinder/api/v3/volumes.py:314
 
-2.3) Run command with explicit version 2.1 in header
+2.3) Run command with explicit version 3.1 in header
 
 Substitute in the following:
-curl -g -i -X POST http://10.10.10.77:8776/v2/<tenant>/volumes -H "User-Agent: python-cinderclient" -H "Content-Type: application/json" -H "Accept: application/json" -H "X-Auth-Token: <token>" -d '{"volume": {"status": "creating", "user_id": null, "name": null, "imageRef": null, "availability_zone": null, "description": null, "multiattach": false, "attach_status": "detached", "volume_type": null, "metadata": {}, "consistencygroup_id": null, "source_volid": null, "snapshot_id": null, "project_id": null, "source_replica": null, "size": 1}}' -H "X-OpenStack-Cinder-API-Version: 2.1"
+curl -g -i -X POST http://10.10.10.77:8776/v3/<tenant>/volumes -H "User-Agent: python-cinderclient" -H "Content-Type: application/json" -H "Accept: application/json" -H "X-Auth-Token: <token>" -d '{"volume": {"status": "creating", "user_id": null, "name": null, "imageRef": null, "availability_zone": null, "description": null, "multiattach": false, "attach_status": "detached", "volume_type": null, "metadata": {}, "consistencygroup_id": null, "source_volid": null, "snapshot_id": null, "project_id": null, "source_replica": null, "size": 1}}' -H "OpenStack-Volume-microversion: 3.1"
 
 Expected Result:
   normal 'cinder create 1' behaviour, i.e volume is created.
-  API will log: "Test for version 2.1 specific private method"
+  API will log: "Test for version 3.1 specific private method"
 
-2.3) Run command with explicit version 2.2 in header
+2.3) Run command with explicit version 3.2 in header
 
 Substitute in the following:
-curl -g -i -X POST http://10.10.10.77:8776/v2/<tenant>/volumes -H "User-Agent: python-cinderclient" -H "Content-Type: application/json" -H "Accept: application/json" -H "X-Auth-Token: <token>" -d '{"volume": {"status": "creating", "user_id": null, "name": null, "imageRef": null, "availability_zone": null, "description": null, "multiattach": false, "attach_status": "detached", "volume_type": null, "metadata": {}, "consistencygroup_id": null, "source_volid": null, "snapshot_id": null, "project_id": null, "source_replica": null, "size": 1}}' -H "X-OpenStack-Cinder-API-Version: 2.2"
+curl -g -i -X POST http://10.10.10.77:8776/v3/<tenant>/volumes -H "User-Agent: python-cinderclient" -H "Content-Type: application/json" -H "Accept: application/json" -H "X-Auth-Token: <token>" -d '{"volume": {"status": "creating", "user_id": null, "name": null, "imageRef": null, "availability_zone": null, "description": null, "multiattach": false, "attach_status": "detached", "volume_type": null, "metadata": {}, "consistencygroup_id": null, "source_volid": null, "snapshot_id": null, "project_id": null, "source_replica": null, "size": 1}}' -H "OpenStack-Volume-microversion: 3.2"
 
 Expected Result:
   normal 'cinder create 1' behaviour, i.e volume is created.
-  API will log: "Test for version 2.2 specific private method"
+  API will log: "Test for version 3.2 specific private method"
 
-2.4) Run command with explicit version 2.3 in header
+2.4) Run command with explicit version 3.3 in header
 
 
 Substitute in the following:
-curl -g -i -X POST http://10.10.10.77:8776/v2/<tenant>/volumes -H "User-Agent: python-cinderclient" -H "Content-Type: application/json" -H "Accept: application/json" -H "X-Auth-Token: <token>" -d '{"volume": {"status": "creating", "user_id": null, "name": null, "imageRef": null, "availability_zone": null, "description": null, "multiattach": false, "attach_status": "detached", "volume_type": null, "metadata": {}, "consistencygroup_id": null, "source_volid": null, "snapshot_id": null, "project_id": null, "source_replica": null, "size": 1}}' -H "X-OpenStack-Cinder-API-Version: 2.3"
+curl -g -i -X POST http://10.10.10.77:8776/v3/<tenant>/volumes -H "User-Agent: python-cinderclient" -H "Content-Type: application/json" -H "Accept: application/json" -H "X-Auth-Token: <token>" -d '{"volume": {"status": "creating", "user_id": null, "name": null, "imageRef": null, "availability_zone": null, "description": null, "multiattach": false, "attach_status": "detached", "volume_type": null, "metadata": {}, "consistencygroup_id": null, "source_volid": null, "snapshot_id": null, "project_id": null, "source_replica": null, "size": 1}}' -H "OpenStack-Volume-microversion: 3.3"
 
 Expected Result:
   normal 'cinder create 1' behaviour, i.e volume is created.
-  API will log: "Test for version 2.2 specific private method"
+  API will log: "Test for version 3.2 specific private method"
 
 WHY? Because the decorator and private function:
-    @wsgi.Controller.api_version("2.2")
+    @wsgi.Controller.api_version("3.2")
     def _test_version_specific(self, req):
-        LOG.debug("Test for version 2.2 specific private method")
+        LOG.debug("Test for version 3.2 specific private method")
 
- will be run for any version >= 2.2
+ will be run for any version >= 3.2
 
-2.5) Run command with explicit version 2.8 in header
+2.5) Run command with explicit version 3.8 in header
 
 
 Substitute in the following:
-curl -g -i -X POST http://10.10.10.77:8776/v2/<tenant>/volumes -H "User-Agent: python-cinderclient" -H "Content-Type: application/json" -H "Accept: application/json" -H "X-Auth-Token: <token>" -d '{"volume": {"status": "creating", "user_id": null, "name": null, "imageRef": null, "availability_zone": null, "description": null, "multiattach": false, "attach_status": "detached", "volume_type": null, "metadata": {}, "consistencygroup_id": null, "source_volid": null, "snapshot_id": null, "project_id": null, "source_replica": null, "size": 1}}' -H "X-OpenStack-Cinder-API-Version: 2.8"
+curl -g -i -X POST http://10.10.10.77:8776/v3/<tenant>/volumes -H "User-Agent: python-cinderclient" -H "Content-Type: application/json" -H "Accept: application/json" -H "X-Auth-Token: <token>" -d '{"volume": {"status": "creating", "user_id": null, "name": null, "imageRef": null, "availability_zone": null, "description": null, "multiattach": false, "attach_status": "detached", "volume_type": null, "metadata": {}, "consistencygroup_id": null, "source_volid": null, "snapshot_id": null, "project_id": null, "source_replica": null, "size": 1}}' -H "OpenStack-Volume-microversion: 3.8"
 
 Expected Result:
 HTTP/1.1 406 Not Acceptable
-X-Openstack-Cinder-Api-Version: 2.8
-Vary: X-OpenStack-Cinder-API-Version
+X-Openstack-Cinder-Api-Version: 3.8
+Vary: OpenStack-Volume-microversion
 Content-Length: 121
 Content-Type: application/json; charset=UTF-8
 X-Compute-Request-Id: req-a639dbce-bde6-44e2-81bf-1e2191e37627
 X-Openstack-Request-Id: req-a639dbce-bde6-44e2-81bf-1e2191e37627
 Date: Thu, 24 Sep 2015 15:46:41 GMT
 
-{"computeFault": {"message": "Version 2.8 is not supported by the API. Minimum is 2.0 and maximum is 2.3.", "code": 406}}
+{"computeFault": {"message": "Version 3.8 is not supported by the API. Minimum is 3.0 and maximum is 3.3.", "code": 406}}
 
