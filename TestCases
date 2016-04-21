@@ -28,18 +28,21 @@ set VOLID and TENANT:
 export VOLID=`cinder show Vol0| awk 'FNR == 11 {print $4}'`
 export TENANT=`cinder show Vol0| awk 'FNR == 19 {print $4}'`
 
+For DEMO USER (used for later Test Cases):
+export TENANT=`cinder show Vol0| awk 'FNR == 15 {print $4}'`
+
 set IP for endpoint:
 export IP=`cinder endpoints |grep publicURL |grep 8776/v2 |grep -o -P '(?<=http://).*(?=:8776)'`
 
 1.1)Substitute in the following:
-curl -g -i -X POST http://$IP:8776/v3/$TENANT/volumes/$VOLID/action -H "User-Agent: python-cinderclient" -H "Content-Type: application/json" -H "Accept: application/json" -H "X-Auth-Token: $TOKEN " -d '{"os-reset_status": {"status": "available"}}' -H "OpenStack-Volume-microversion: 3.0"
+curl -g -i -X POST http://$IP:8776/v3/$TENANT/volumes/$VOLID/action -H "User-Agent: python-cinderclient" -H "Content-Type: application/json" -H "Accept: application/json" -H "X-Auth-Token: $TOKEN " -d '{"os-reset_status": {"status": "available"}}' -H "OpenStack-API-version: cinder 3.0"
 
 Expected Result:
  normal 'reset-status $VOLID' behaviour, i.e. set volume to available
 
 
 1.2)Substitute in the following:
-curl -g -i -X POST http://$IP:8776/v3/$TENANT/volumes/$VOLID/action -H "User-Agent: python-cinderclient" -H "Content-Type: application/json" -H "Accept: application/json" -H "X-Auth-Token: $TOKEN " -d '{"os-reset_status": {"status": "available"}}' -H "OpenStack-Volume-microversion: 3.1"
+curl -g -i -X POST http://$IP:8776/v3/$TENANT/volumes/$VOLID/action -H "User-Agent: python-cinderclient" -H "Content-Type: application/json" -H "Accept: application/json" -H "X-Auth-Token: $TOKEN " -d '{"os-reset_status": {"status": "available"}}' -H "OpenStack-API-version: cinder 3.1"
 
 Expected Result:
 c-api logs will have: "Test for api version 3.1"
@@ -49,7 +52,7 @@ for example:
  normal 'reset-status $VOLID' behaviour, i.e. set volume to available
 
 1.3)Substitute in the following:
-curl -g -i -X POST http://$IP:8776/v3/$TENANT/volumes/$VOLID/action -H "User-Agent: python-cinderclient" -H "Content-Type: application/json" -H "Accept: application/json" -H "X-Auth-Token: $TOKEN " -d '{"os-reset_status": {"status": "available"}}' -H "OpenStack-Volume-microversion: 3.2"
+curl -g -i -X POST http://$IP:8776/v3/$TENANT/volumes/$VOLID/action -H "User-Agent: python-cinderclient" -H "Content-Type: application/json" -H "Accept: application/json" -H "X-Auth-Token: $TOKEN " -d '{"os-reset_status": {"status": "available"}}' -H "OpenStack-API-version: cinder 3.2"
 
 Expected Result:
 c-api logs will have: "Test for api version 3.2 or 3.3"
@@ -97,7 +100,7 @@ Expected Result:
 2.2) Run command with explicit version 3.0 in header
 
 Substitute in the following:
-curl -g -i -X POST http://$IP:8776/v3/$TENANT/volumes -H "User-Agent: python-cinderclient" -H "Content-Type: application/json" -H "Accept: application/json" -H "X-Auth-Token: $TOKEN" -d '{"volume": {"status": "creating", "user_id": null, "name": null, "imageRef": null, "availability_zone": null, "description": null, "multiattach": false, "attach_status": "detached", "volume_type": null, "metadata": {}, "consistencygroup_id": null, "source_volid": null, "snapshot_id": null, "project_id": null, "source_replica": null, "size": 1}}' -H "OpenStack-Volume-microversion: 3.0"
+curl -g -i -X POST http://$IP:8776/v3/$TENANT/volumes -H "User-Agent: python-cinderclient" -H "Content-Type: application/json" -H "Accept: application/json" -H "X-Auth-Token: $TOKEN" -d '{"volume": {"status": "creating", "user_id": null, "name": null, "imageRef": null, "availability_zone": null, "description": null, "multiattach": false, "attach_status": "detached", "volume_type": null, "metadata": {}, "consistencygroup_id": null, "source_volid": null, "snapshot_id": null, "project_id": null, "source_replica": null, "size": 1}}' -H "OpenStack-API-version: cinder 3.0"
 
 Expected Result:
   normal 'cinder create 1' behaviour, i.e volume is created.
@@ -108,7 +111,7 @@ Expected Result:
 2.3) Run command with explicit version 3.1 in header
 
 Substitute in the following:
-curl -g -i -X POST http://$IP:8776/v3/$TENANT/volumes -H "User-Agent: python-cinderclient" -H "Content-Type: application/json" -H "Accept: application/json" -H "X-Auth-Token: $TOKEN" -d '{"volume": {"status": "creating", "user_id": null, "name": null, "imageRef": null, "availability_zone": null, "description": null, "multiattach": false, "attach_status": "detached", "volume_type": null, "metadata": {}, "consistencygroup_id": null, "source_volid": null, "snapshot_id": null, "project_id": null, "source_replica": null, "size": 1}}' -H "OpenStack-Volume-microversion: 3.1"
+curl -g -i -X POST http://$IP:8776/v3/$TENANT/volumes -H "User-Agent: python-cinderclient" -H "Content-Type: application/json" -H "Accept: application/json" -H "X-Auth-Token: $TOKEN" -d '{"volume": {"status": "creating", "user_id": null, "name": null, "imageRef": null, "availability_zone": null, "description": null, "multiattach": false, "attach_status": "detached", "volume_type": null, "metadata": {}, "consistencygroup_id": null, "source_volid": null, "snapshot_id": null, "project_id": null, "source_replica": null, "size": 1}}' -H "OpenStack-API-version: cinder 3.1"
 
 Expected Result:
   normal 'cinder create 1' behaviour, i.e volume is created.
@@ -119,7 +122,7 @@ Expected Result:
 2.3) Run command with explicit version 3.2 in header
 
 Substitute in the following:
-curl -g -i -X POST http://$IP:8776/v3/$TENANT/volumes -H "User-Agent: python-cinderclient" -H "Content-Type: application/json" -H "Accept: application/json" -H "X-Auth-Token: $TOKEN" -d '{"volume": {"status": "creating", "user_id": null, "name": null, "imageRef": null, "availability_zone": null, "description": null, "multiattach": false, "attach_status": "detached", "volume_type": null, "metadata": {}, "consistencygroup_id": null, "source_volid": null, "snapshot_id": null, "project_id": null, "source_replica": null, "size": 1}}' -H "OpenStack-Volume-microversion: 3.2"
+curl -g -i -X POST http://$IP:8776/v3/$TENANT/volumes -H "User-Agent: python-cinderclient" -H "Content-Type: application/json" -H "Accept: application/json" -H "X-Auth-Token: $TOKEN" -d '{"volume": {"status": "creating", "user_id": null, "name": null, "imageRef": null, "availability_zone": null, "description": null, "multiattach": false, "attach_status": "detached", "volume_type": null, "metadata": {}, "consistencygroup_id": null, "source_volid": null, "snapshot_id": null, "project_id": null, "source_replica": null, "size": 1}}' -H "OpenStack-API-version: cinder 3.2"
 
 Expected Result:
   normal 'cinder create 1' behaviour, i.e volume is created.
@@ -129,7 +132,7 @@ Expected Result:
 
 
 Substitute in the following:
-curl -g -i -X POST http://$IP:8776/v3/$TENANT/volumes -H "User-Agent: python-cinderclient" -H "Content-Type: application/json" -H "Accept: application/json" -H "X-Auth-Token: $TOKEN" -d '{"volume": {"status": "creating", "user_id": null, "name": null, "imageRef": null, "availability_zone": null, "description": null, "multiattach": false, "attach_status": "detached", "volume_type": null, "metadata": {}, "consistencygroup_id": null, "source_volid": null, "snapshot_id": null, "project_id": null, "source_replica": null, "size": 1}}' -H "OpenStack-Volume-microversion: 3.3"
+curl -g -i -X POST http://$IP:8776/v3/$TENANT/volumes -H "User-Agent: python-cinderclient" -H "Content-Type: application/json" -H "Accept: application/json" -H "X-Auth-Token: $TOKEN" -d '{"volume": {"status": "creating", "user_id": null, "name": null, "imageRef": null, "availability_zone": null, "description": null, "multiattach": false, "attach_status": "detached", "volume_type": null, "metadata": {}, "consistencygroup_id": null, "source_volid": null, "snapshot_id": null, "project_id": null, "source_replica": null, "size": 1}}' -H "OpenStack-API-version: cinder 3.3"
 
 Expected Result:
   normal 'cinder create 1' behaviour, i.e volume is created.
@@ -141,7 +144,7 @@ Expected Result:
 
 
 Substitute in the following:
-curl -g -i -X POST http://$IP:8776/v3/$TENANT/volumes -H "User-Agent: python-cinderclient" -H "Content-Type: application/json" -H "Accept: application/json" -H "X-Auth-Token: $TOKEN" -d '{"volume": {"status": "creating", "user_id": null, "name": null, "imageRef": null, "availability_zone": null, "description": null, "multiattach": false, "attach_status": "detached", "volume_type": null, "metadata": {}, "consistencygroup_id": null, "source_volid": null, "snapshot_id": null, "project_id": null, "source_replica": null, "size": 1}}' -H "OpenStack-Volume-microversion: 3.8"
+curl -g -i -X POST http://$IP:8776/v3/$TENANT/volumes -H "User-Agent: python-cinderclient" -H "Content-Type: application/json" -H "Accept: application/json" -H "X-Auth-Token: $TOKEN" -d '{"volume": {"status": "creating", "user_id": null, "name": null, "imageRef": null, "availability_zone": null, "description": null, "multiattach": false, "attach_status": "detached", "volume_type": null, "metadata": {}, "consistencygroup_id": null, "source_volid": null, "snapshot_id": null, "project_id": null, "source_replica": null, "size": 1}}' -H "OpenStack-API-version: cinder 3.8"
 
 Expected Result:
 HTTP/1.1 406 Not Acceptable
